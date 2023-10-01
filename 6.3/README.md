@@ -154,7 +154,6 @@ resource "yandex_compute_disk" "default" {
 
 3. Назначьте ВМ созданную в 1-м задании группу безопасности.
 
-Сделано
 
 ```bash
   network_interface {
