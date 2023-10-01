@@ -113,7 +113,7 @@ resource "yandex_compute_instance" "web" {
 ```
 
 <img
-  src=""https://github.com/basson63/devops-netology-29/blob/terraform-03/6.3/images/2.png"
+  src="https://github.com/basson63/devops-netology-29/blob/terraform-03/6.3/images/2.png"
   alt="image 2.png"
   title="image 2.png"
   style="display: inline-block; margin: 0 auto; width: 600px">
@@ -146,7 +146,7 @@ resource "yandex_compute_disk" "default" {
 ```
 
 <img
-src=""https://github.com/basson63/devops-netology-29/blob/terraform-03/6.3/images/3.png"
+  src=""https://github.com/basson63/devops-netology-29/blob/terraform-03/6.3/images/3.png"
   alt="image 3.png"
   title="image 3.png"
   style="display: inline-block; margin: 0 auto; width: 600px">
@@ -188,7 +188,7 @@ resource "local_file" "hosts_cfg" {
 }
 ```
 <img
-src=""https://github.com/basson63/devops-netology-29/blob/terraform-03/6.3/images/4.png"
+  src=""https://github.com/basson63/devops-netology-29/blob/terraform-03/6.3/images/4.png"
   alt="image 4.png"
   title="image 4.png"
   style="display: inline-block; margin: 0 auto; width: 600px">
