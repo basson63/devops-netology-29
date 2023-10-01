@@ -10,7 +10,7 @@
 
 ### Решение 1
 
-## ![Скриншот1](1.png)
+## ![1](1.png)
 
 ---
 
@@ -25,7 +25,7 @@
 
 ### Решение 2
 
-## ![Скринщот2](2.png)
+## ![2](2.png)
 
 ## Requirements
 
@@ -80,7 +80,7 @@ No outputs.
 
 - terraform state list
 
-## ![Скриншот3](3.png)
+## ![3](3.png)
 
 2. Полностью удалите из стейта модуль vpc.
 
@@ -90,26 +90,26 @@ No outputs.
 
 - terraform state rm module.my-vm.yandex_compute_instance.vm[0]
 
-## ![Скриншот4](4.png)
+## ![4](4.png)
 
 4. Импортируйте всё обратно. Проверьте terraform plan. Изменений быть не должно.
    Приложите список выполненных команд и скриншоты процессы.
 
 - terraform import 'module.my-vpc.yandex_vpc_network.develop' enpd5b0au07gir48am92
 
-## ![Скриншот5](5.png)
+## ![5](5.png)
 
 - terraform import 'module.my-vpc.yandex_vpc_subnet.develop' e9boabe1js0k7hcr4kl3
 
-## ![Скриншот6](6.png)
+## ![6](6.png)
 
 - terraform import 'module.my-vm.yandex_compute_instance.vm[0]' fhmnbs1coq5i1suvraue
 
-## ![Скриншот7](7.png)
+## ![7](7.png)
 
 - terraform plan
 
-## ![Скриншот8](8.png)
+## ![8](8.png)
 
 ## Дополнительные задания (со звёздочкой\*)
 
@@ -444,4 +444,4 @@ Terraform will perform the following actions:
   - zone = "ru-central1-c"
     }
 
-## ![Скриншот9](9.png)
+## ![9](9.png)
