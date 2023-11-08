@@ -37,9 +37,9 @@
 10. Выложите playbook в репозиторий.
 11. В ответе дайте ссылки на оба репозитория с roles и одну ссылку на репозиторий с playbook.
 
-[lighthouse-role](https://github.com/vitaliy495/lighthouse-role)
+[lighthouse-role](https://github.com/basson63/lighthouse-role)
 
-[vector-role](https://github.com/vitaliy495/vector-role)
+[vector-role](https://github.com/basson63/vector-role)
 
 ---
 
