@@ -94,7 +94,7 @@ INFO: ------------------------------------------------------------------------
 2. Запустите команду `mvn package` в директории с `pom.xml`, ожидайте успешного окончания.
 ```java
 [WARNING] JAR will be empty - no content was marked for inclusion!
-[INFO] Building jar: /dhome/devops-netology/bloc-8/09-ci-03-cicd/mvn/target/simple-app-1.0-SNAPSHOT.jar
+[INFO] Building jar: /home/devops-netology/bloc-8/09-ci-03-cicd/mvn/target/simple-app-1.0-SNAPSHOT.jar
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
