@@ -1,0 +1,42 @@
+version: '3.1'
+
+networks:
+  teamcity:
+    driver: bridge
+
+services:
+  teamcity-server:
+    image: jetbrains/teamcity-server:latest
+    container_name: teamcity-server
+    volumes:
+      - /opt/docker/teamcity/server:/data/teamcity_server/datadir
+      - /opt/docker/teamcity/server/log:/opt/teamcity/logs
+    restart: always
+    networks:
+      - teamcity
+    environment:
+      - TEAMCITY_SERVER_MEM_OPTS="-Xmx4g"
+    ports:
+      - "0.0.0.0:8111:8111"
+
+  teamcity-agent:
+    image: jetbrains/teamcity-agent:latest
+    container_name: teamcity-agent
+    restart: always
+    networks:
+      - teamcity
+    environment:
+      - SERVER_URL=http://teamcity-server:8111
+
+  nexus:
+    image: sonatype/nexus3
+    container_name: nexus
+    restart: always
+    volumes:
+      - /opt/docker/nexus:/sonatype-work
+    ports:
+      - "0.0.0.0:8081:8081"
+    networks:
+      - teamcity
+    environment:
+      - MAX_HEAP=768m
