@@ -54,7 +54,7 @@ kibana              kibana:8.7.0                "/bin/tini -- /usr/l…"   kiban
 logstash            logstash:8.7.0              "/usr/local/bin/dock…"   logstash            6 minutes ago       Up 6 minutes        0.0.0.0:5044->5044/tcp, :::5044->5044/tcp, 0.0.0.0:5046->5046/tcp, :::5046->5046/tcp, 9600/tcp
 some_app            library/python:3.9-alpine   "python3 /opt/run.py"    some_application    6 minutes ago       Up 6 minutes
 ```
-[kibana](img/kibana.jpg)
+![kibana](img/kibana.jpg)
 
 
 ## Задание 2
