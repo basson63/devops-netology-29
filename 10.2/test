@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+
+ curl -X GET http://storage:9000/data/332d778d-ad23-48f5-89c6-0185d18353d6.jpg
+
+
+# User Minio Vars
+  URL="storage:9000"
+  USERNAME="storage"
+  PASSWORD="qwerty123456"
+  BUCKET="images"
+  MINIO_PATH="/${BUCKET}/432fb067-4682-4088-8920-0b650542b0e6.jpg"
+  OUT_FILE=12.jpg
+
+  # Static Vars
+  DATE=$(date -R --utc)
+  CONTENT_TYPE='application/zstd'
+  SIG_STRING="GET\n\n${CONTENT_TYPE}\n${MINIO_PATH}"
+  SIGNATURE=`echo -en ${SIG_STRING} | openssl sha256 -hmac ${PASSWORD} -binary | base64`
+  PROTOCOL="http"
+
+  curl -v -o "${OUT_FILE}" \
+      -H "Host: $URL" \
+      -H "Date: ${DATE}" \
+      -H "Content-Type: ${CONTENT_TYPE}" \
+      -H "Authorization: AWS ${USERNAME}:${SIGNATURE}" \
+      ${PROTOCOL}://$URL${MINIO_PATH}
