@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: my-pv1
+  namespace: default
+spec:
+  storageClassName: ""
+  capacity:
+    storage: 101Mi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Delete
+  hostPath:
+    path: /data/pv1
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-pvc1
+  namespace: default
+spec:
+  storageClassName: ""
+  accessModes: [ReadWriteMany]
+  resources:
+    requests:
+      storage: 101Mi

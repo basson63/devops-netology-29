@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: vp
+spec:
+  containers:
+    - name: app1
+      image: busybox
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - name: vol
+          mountPath: /tmp
+      command: ['sh', '-c', 'echo Success! > /tmp/busy.txt && sleep 5']
+    - name: app2
+      image: wbitt/network-multitool
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - name: vol
+          mountPath: /tmp2
+      command: ['sh', '-c', 'while true ; do cat /tmp2/busy.txt && sleep 10; done']
+  volumes:
+    - name: vol
+      emptyDir: {}

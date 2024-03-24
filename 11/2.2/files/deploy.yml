@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dep-nfs
+  labels:
+    app: dep-nfs
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dep-nfs
+  template:
+    metadata:
+      labels:
+        app: dep-nfs
+    spec:
+      containers:
+      - image: wbitt/network-multitool
+        name: multitool
+        volumeMounts:
+          - mountPath: /data-nfs
+            name: volume-nfs
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            cpu: 200m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 256Mi
+      volumes:
+        - name: volume-nfs
+          persistentVolumeClaim:
+            claimName: nfs-pvc

@@ -1,0 +1,27 @@
+#
+[all]
+%{~ for i in wm }
+${i["name"]} ansible_host=${i["network_interface"][0]["nat_ip_address"]} ansible_user=ubuntu %{ endfor ~}
+
+
+[kube_control_plane]
+%{~ for i in wm }
+${i["name"]} %{ endfor ~}
+
+
+[etcd]
+%{~ for i in wm }
+${i["name"]} %{ endfor ~}
+
+
+[kube_node]
+%{~ for i in wm }
+${i["name"]} %{ endfor ~}
+
+
+[calico_rr]
+
+[k8s_cluster:children]
+kube_control_plane
+kube_node
+calico_rr

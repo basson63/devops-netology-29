@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: vpod
+spec:
+  containers:
+    - name: app1
+      image: busybox
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - name: volume-loc
+          mountPath: /tmp
+      command: ['sh', '-c', 'echo Success! >> /tmp/busy.txt && sleep 5']
+    - image: wbitt/network-multitool
+      imagePullPolicy: IfNotPresent
+      name: app2
+      resources:
+        limits:
+          cpu: 200m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 256Mi
+      volumeMounts:
+        - name: volume-loc
+          mountPath: /tmp2
+      command: ['sh', '-c', 'while true ; do cat /tmp2/busy.txt && sleep 5; done']
+  volumes:
+    - name: volume-loc
+      persistentVolumeClaim:
+        claimName: my-pvc1
