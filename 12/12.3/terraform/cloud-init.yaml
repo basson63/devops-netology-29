@@ -1,0 +1,11 @@
+#cloud-config
+runcmd:
+  - echo "<html><h1> Hello world!!! <p> <img src="https://storage.yandexcloud.net/backet-vitnek/ogon.jpg"></p></h1></html>" > /var/www/html/index.html
+users:
+  - default
+  - name: ubuntu
+    groups: sudo
+    shell: /bin/bash
+    sudo: 'ALL=(ALL) NOPASSWD:ALL'
+    ssh-authorized-keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCoVCloEgRgs8aEyENvVrM+8d/D/Xn28zs3YsAvs6+YO7AK/Bnb+neEGIf8RKlAdM7R8yy+aPEgxMITlx91m2k4Dd+rf0A8vAn5UL7zigsOZhesVgDcMDD0ASpTWiEStXlORFIA2MYhWhteAoM6bdGkMBumQHn2R7HyFaXfS62NStC5beIrowSD80OPxKqZHBq7+YN9CAJUrEp1VesFU7/pmnhCFpBusV6IUxdrVgRvonB1nFrnHw8UxUYPUUvVbfGXcwlhXO82mN598c3AOcRGMsHHzDj0+fcwPRtXSasGyIYGFJDvcupEA2L4/7UuoH8VR9A3IVetEAV/lsZaveG0lLozeYFy1sqPlppQPqbbShIL0ZjSa0CxTacT2gHfD5fB2+O1tlIktHtYiUOQMYB3bKqe1yvExV8Jzjk48aok2KrvsMCR9fUHC7tgOGbAFWcLBJP7E8rcthATc7NXzICjj79QvKc6t229MtO3IkJVMfR6xETCjbrRCc6VOze4qjM= vit@vit-virtual-machine
