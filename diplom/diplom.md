@@ -6,7 +6,7 @@
 
 Подготовить облачную инфраструктуру на базе облачного провайдера Яндекс.Облако. Состав инфраструктуры: 4 ВМ (jenkins, master node и 2 worker), сервисный аккаунт, backend, VPC с подсетями в разных зонах доступности (зону C не использовал, т.к. постоянно получал ошибку про квоту ресурсов в этой зоне). Команды `terraform destroy` и `terraform apply`  выполнятся без дополнительных ручных действий.
 
-[terraform](https://github.com/Serg2211/devops-netology/blob/main/dz/diplom/terraform)
+[terraform](https://github.com/basson63/devops-netology-29/tree/main/diplom/terraform)
 
 
 ```bash
@@ -89,39 +89,39 @@ worker_nodes_ip_address_nat = [
     "ip_address_nat = 51.250.27.49",
   ],
 ]
-sergo@ubuntu-pc:~/Work/diplom$ 
+basson@ubuntu_pc:~/Work/diplom$ 
 ```
 
 <img
-  src="https://github.com/Serg2211/devops-netology/blob/main/dz/diplom/images/1.png"
+  src="https://github.com/basson63/devops-netology-29/tree/main/diplom/images/1.png"
   alt="image 1.png"
   title="image 1.png"
   style="display: inline-block; margin: 0 auto; max-width: 600px">
 
 
 <img
-  src="https://github.com/Serg2211/devops-netology/blob/main/dz/diplom/images/2.png"
+  src="https://github.com/basson63/devops-netology-29/tree/main/diplom/images/2.png"
   alt="image 2.png"
   title="image 2.png"
   style="display: inline-block; margin: 0 auto; max-width: 600px">
 
 
 <img
-  src="https://github.com/Serg2211/devops-netology/blob/main/dz/diplom/images/3.png"
+  src="https://github.com/basson63/devops-netology-29/tree/main/diplom/images/3.png"
   alt="image 3.png"
   title="image 3.png"
   style="display: inline-block; margin: 0 auto; max-width: 600px">
 
 
 <img
-  src="https://github.com/Serg2211/devops-netology/blob/main/dz/diplom/images/4.png"
+  src="https://github.com/basson63/devops-netology-29/tree/main/diplom/images/4.png"
   alt="image 4.png"
   title="image 4.png"
   style="display: inline-block; margin: 0 auto; max-width: 600px">
 
 
 <img
-  src="https://github.com/Serg2211/devops-netology/blob/main/dz/diplom/images/5.png"
+  src="https://github.com/basson63/devops-netology-29/tree/main/diplom/images/5.png"
   alt="image 5.png"
   title="image 5.png"
   style="display: inline-block; margin: 0 auto; max-width: 600px">
@@ -134,10 +134,10 @@ sergo@ubuntu-pc:~/Work/diplom$
 
 Запустить и сконфигурировать Kubernetes кластер. Воспользовался [Kubespray](https://kubernetes.io/docs/setup/production-environment/tools/kubespray/) 
 
-[ansible](https://github.com/Serg2211/devops-netology/blob/main/dz/diplom/ansible)
+[ansible](https://github.com/basson63/devops-netology-29/tree/main/diplom/ansible)
 
 ```bash
-sergo@ubuntu-pc:~/Work/kubespray/inventory/mycluster$ cat hosts.yaml 
+basson@ubuntu_pc:~/Work/kubespray/inventory/mycluster$ cat hosts.yaml 
 all:
   hosts:
     node1:
@@ -173,11 +173,11 @@ all:
         kube_node:
     calico_rr:
       hosts: {}
-sergo@ubuntu-pc:~/Work/kubespray/inventory/mycluster$ 
+basson@ubuntu_pc:~/Work/kubespray/inventory/mycluster$ 
 ```
 
 ```bash
-sergo@ubuntu-pc:~/Work/kubespray$ ansible-playbook -i inventory/mycluster/hosts.yaml cluster.yml -b -v
+basson@ubuntu_pc:~/Work/kubespray$ ansible-playbook -i inventory/mycluster/hosts.yaml cluster.yml -b -v
 ...
 ...
 здесь был огромный вывод
@@ -210,10 +210,10 @@ download : Download_container | Download image if required ---------------------
 network_plugin/calico : Wait for calico kubeconfig to be created -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 6.43s
 download : Download_container | Download image if required -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 6.39s
 kubernetes-apps/ansible : Kubernetes Apps | Start Resources ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 6.22s
-sergo@ubuntu-pc:~/Work/kubespray$ 
+basson@ubuntu_pc:~/Work/kubespray$ 
 ```
 
-Перегенерировал сертификат, добавил внешний IP. Иначе получал ошибку, скорее всего это можно было сделать до установки k8s.
+Перегенерировал сертификат, добавил внешний IP. Иначе получал ошибку, видимо это нужно было сделать до установки k8s.
 
 ```bash
 root@node1:~/.kube# rm /etc/kubernetes/pki/apiserver.* -f
@@ -226,7 +226,7 @@ root@node1:~/.kube#
 Отредактировал kubectl config на своей ВМ:
 
 ```bash
-sergo@ubuntu-pc:~/.kube$ cat config 
+basson@ubuntu_pc:~/.kube$ cat config 
 apiVersion: v1
 clusters:
 - cluster:
@@ -246,18 +246,18 @@ users:
   user:
     client-certificate-data: ...
     client-key-data: ...
-sergo@ubuntu-pc:~/.kube$
+basson@ubuntu_pc:~/.kube$
 ```
 
 Результат работы kubectl, отрабатывает без ошибок:
 
 ```bash
-sergo@ubuntu-pc:~/Work/diplom$ kubectl get nodes
+basson@ubuntu_pc:~/Work/diplom$ kubectl get nodes
 NAME    STATUS   ROLES           AGE   VERSION
 node1   Ready    control-plane   20m   v1.29.2
 node2   Ready    <none>          20m   v1.29.2
 node3   Ready    <none>          20m   v1.29.2
-sergo@ubuntu-pc:~/Work/diplom$ kubectl get pods --all-namespaces
+basson@ubuntu_pc:~/Work/diplom$ kubectl get pods --all-namespaces
 NAMESPACE     NAME                                      READY   STATUS    RESTARTS   AGE
 kube-system   calico-kube-controllers-648dffd99-m9qww   1/1     Running   0          19m
 kube-system   calico-node-cs5qf                         1/1     Running   0          19m
@@ -277,7 +277,7 @@ kube-system   nginx-proxy-node3                         1/1     Running   0     
 kube-system   nodelocaldns-lbxvs                        1/1     Running   0          19m
 kube-system   nodelocaldns-m2v2p                        1/1     Running   0          19m
 kube-system   nodelocaldns-rkkpp                        1/1     Running   0          19m
-sergo@ubuntu-pc:~/Work/diplom$ 
+basson@ubuntu_pc:~/Work/diplom$ 
 ```
 ---
 
@@ -285,7 +285,7 @@ sergo@ubuntu-pc:~/Work/diplom$
 
 Создан отдельный git репозиторий с простым nginx конфигом.
 
-[app](https://github.com/Serg2211/app.git)
+[app](https://github.com/basson63/app.git)
 
 [Dockerfile](https://github.com/Serg2211/app/blob/main/Dockerfile) для создания образа приложения.
 
@@ -295,7 +295,7 @@ WORKDIR /usr/share/nginx/html
 COPY . /usr/share/nginx/html/
 ```
 
-Регистри с собранным docker image. В качестве регистри использован DockerHub.
+Registry с собранным docker image. В качестве registry использован DockerHub.
 
 [DockerHub](https://hub.docker.com/repository/docker/sergo2211/app/general)
 
