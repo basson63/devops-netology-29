@@ -781,6 +781,7 @@ kubernetes/node : Pre-upgrade | check if kubelet container exists --------------
 container-engine/crictl : Extract_file | Unpacking archive -------------------------------------------------------------------------------------------- 8.90s
 kubernetes/kubeadm : Update server field in kubelet kubeconfig ---------------------------------------------------------------------------------------- 8.57s
 
+```
 
 4. Выполним создание и настройку kubeconfig-файла для пользователя ubuntu:
 ```
@@ -829,7 +830,6 @@ kube-system   nodelocaldns-jvb9m                                       1/1     R
 ![kuber running](img/11.jpg)
 ![kuber running](img/12.jpg)
 ![kuber running](img/13.jpg)
-
 
 
 
