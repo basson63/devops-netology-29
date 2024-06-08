@@ -195,7 +195,7 @@ provider_installation {
 
 Terraform will perform the following actions:
 
- + # local_file.backend will be created
+ +  local_file.backend will be created
   + resource "local_file" "backend" {
       + content              = (sensitive value)
       + content_base64sha256 = (known after apply)
@@ -210,7 +210,7 @@ Terraform will perform the following actions:
       + id                   = (known after apply)
     }
 
-  # yandex_iam_service_account.sa will be created
+  + yandex_iam_service_account.sa will be created
   + resource "yandex_iam_service_account" "sa" {
       + created_at  = (known after apply)
       + description = "Service account"
@@ -219,7 +219,7 @@ Terraform will perform the following actions:
       + name        = "sa"
     }
 
-  # yandex_iam_service_account_static_access_key.sa-static_key will be created
+  + yandex_iam_service_account_static_access_key.sa-static_key will be created
   + resource "yandex_iam_service_account_static_access_key" "sa-static_key" {
       + access_key           = (known after apply)
       + created_at           = (known after apply)
@@ -231,7 +231,7 @@ Terraform will perform the following actions:
       + service_account_id   = (known after apply)
     }
 
-  # yandex_kms_symmetric_key.key-a will be created
+  + yandex_kms_symmetric_key.key-a will be created
   + resource "yandex_kms_symmetric_key" "key-a" {
       + created_at          = (known after apply)
       + default_algorithm   = "AES_128"
@@ -245,7 +245,7 @@ Terraform will perform the following actions:
       + status              = (known after apply)
     }
 
-  # yandex_resourcemanager_folder_iam_binding.editor will be created
+  + yandex_resourcemanager_folder_iam_binding.editor will be created
   + resource "yandex_resourcemanager_folder_iam_binding" "editor" {
       + folder_id = "b1gm549jb8foho4i61nr"
       + id        = (known after apply)
@@ -253,7 +253,7 @@ Terraform will perform the following actions:
       + role      = "editor"
     }
 
-  # yandex_resourcemanager_folder_iam_binding.encrypterDecrypter will be created
+  + yandex_resourcemanager_folder_iam_binding.encrypterDecrypter will be created
   + resource "yandex_resourcemanager_folder_iam_binding" "encrypterDecrypter" {
       + folder_id = "b1gm549jb8foho4i61nr"
       + id        = (known after apply)
@@ -261,7 +261,7 @@ Terraform will perform the following actions:
       + role      = "kms.keys.encrypterDecrypter"
     }
 
-  # yandex_resourcemanager_folder_iam_binding.storage-admin will be created
+  + yandex_resourcemanager_folder_iam_binding.storage-admin will be created
   + resource "yandex_resourcemanager_folder_iam_binding" "storage-admin" {
       + folder_id = "b1gm549jb8foho4i61nr"
       + id        = (known after apply)
@@ -269,7 +269,7 @@ Terraform will perform the following actions:
       + role      = "storage.admin"
     }
 
-  # yandex_storage_bucket.diplom will be created
+  + yandex_storage_bucket.diplom will be created
   + resource "yandex_storage_bucket" "diplom" {
       + access_key            = (known after apply)
       + acl                   = "public-read"
@@ -299,7 +299,7 @@ Terraform will perform the following actions:
         }
     }
 
-  # yandex_storage_object.object-2 will be created
+  + yandex_storage_object.object-2 will be created
   + resource "yandex_storage_object" "object-2" {
       + access_key   = (known after apply)
       + acl          = "private"
@@ -311,7 +311,7 @@ Terraform will perform the following actions:
       + source       = "./terraform.tfstate"
     }
 
-  # yandex_vpc_network.network-diploma will be created
+  + yandex_vpc_network.network-diploma will be created
   + resource "yandex_vpc_network" "network-diploma" {
       + created_at                = (known after apply)
       + default_security_group_id = (known after apply)
@@ -322,7 +322,7 @@ Terraform will perform the following actions:
       + subnet_ids                = (known after apply)
     }
 
-  # yandex_vpc_subnet.subnet-a will be created
+  + yandex_vpc_subnet.subnet-a will be created
   + resource "yandex_vpc_subnet" "subnet-a" {
       + created_at     = (known after apply)
       + folder_id      = "b1gm549jb8foho4i61nr"
@@ -337,7 +337,7 @@ Terraform will perform the following actions:
       + zone           = "ru-central1-a"
     }
 
-  # yandex_vpc_subnet.subnet-b will be created
+  + yandex_vpc_subnet.subnet-b will be created
   + resource "yandex_vpc_subnet" "subnet-b" {
       + created_at     = (known after apply)
       + folder_id      = "b1gm549jb8foho4i61nr"
@@ -352,7 +352,7 @@ Terraform will perform the following actions:
       + zone           = "ru-central1-b"
     }
 
-  # yandex_vpc_subnet.subnet-c will be created
+  + yandex_vpc_subnet.subnet-c will be created
   + resource "yandex_vpc_subnet" "subnet-c" {
       + created_at     = (known after apply)
       + folder_id      = "b1gm549jb8foho4i61nr"
