@@ -370,16 +370,13 @@ Terraform will perform the following actions:
 Plan: 13 to add, 0 to change, 0 to destroy.
 
 
-```
-
-```
 * Применим конфигурацию, описанную в `main.tf`:
 
 ![init](img/3.jpg)
 ```
 
 
-* Подтвердим успешность создания ресурсов и задействования S3-bucket'а скриншотами:
+## Подтвердим успешность создания ресурсов и задействования S3-bucket'а скриншотами:
 ```
 ![init](img/4.jpg) 
 ![init](img/5.jpg)
@@ -387,17 +384,14 @@ Plan: 13 to add, 0 to change, 0 to destroy.
 
 ```
 
----
-
-<a id="2"></a>
 ## Создание Kubernetes кластера
 
-<a id="2-1"></a>
 ### Подготовка виртуальных машин Compute Cloud для создания Kubernetes-кластера
 1. Создадим файл `vm.tf` в котором будет описано три виртуальные машины, одна master и две worker в разных зонах доступности:
 ```
-# Virtual machines
-## Kubernetes master
+```
+Virtual machines
+Kubernetes master
 resource "yandex_compute_instance" "vm-master" {
   name = "vm-master"
   hostname = "vm-master"
@@ -420,7 +414,8 @@ resource "yandex_compute_instance" "vm-master" {
     ssh-keys = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
   }
 }
-
+```
+```
 ## Kubernetes worker-1
 resource "yandex_compute_instance" "vm-worker-1" {
   name = "vm-worker-1"
