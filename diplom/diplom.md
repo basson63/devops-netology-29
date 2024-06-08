@@ -190,6 +190,8 @@ provider_installation {
 ![init](img/2.jpg)
 
 Результат выполнения команды terraform plan:
+
+```
 + Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
   + create
 
@@ -370,6 +372,8 @@ Terraform will perform the following actions:
 Plan: 13 to add, 0 to change, 0 to destroy.
 
 
+```
+
 * Применим конфигурацию, описанную в `main.tf`:
 
 ![init](img/3.jpg)
@@ -377,8 +381,6 @@ Plan: 13 to add, 0 to change, 0 to destroy.
 
 
 ## Подтвердим успешность создания ресурсов и задействования S3-bucket'а скриншотами:
-```
-```
 ![init](img/4.jpg) 
 ![init](img/5.jpg)
 ![init](img/6.jpg)
@@ -510,12 +512,9 @@ internal-ip-address-vm-master = "192.168.10.6"
 ```
 
 4. Виртуальные машины созданы корректно. Подтвердим результат их создания скриншотом:
-```
 
 ![init](img/8.jpg)
 
-
-<a id="2-2"></a>
 ### Подготовка ansible-конфигурации Kubespray
 *Для подготовки ansible-конфигурации необходимо сформировать:
 1) предварительный ansible-playbook, выполняющий подготовку узлов для установки Kubernetes методом Kubespray;
@@ -554,7 +553,7 @@ root@vm:/terraform/ansible#cat prep.yaml
 
 2. Inventory-файл для предварительного ansible-playbook'a будем формировать автоматически с помощью terraform. Для этого создадим файл `ansible.tf`:
 ```
-## Ansible inventory for preparation
+Ansible inventory for preparation
 resource "local_file" "inventory-preparation" {
   content = <<EOF1
 [kube-cloud]
@@ -569,7 +568,7 @@ ${yandex_compute_instance.vm-worker-2.network_interface.0.nat_ip_address}
 
 3. Комплексный inventory-файл для отработки инструмента Kubespray также будем формировать автоматически с помощью terraform. Для этого дополним имеющийся файл `ansible.tf` следующим блоком:
 ```
-## Ansible inventory for Kuberspray
+Ansible inventory for Kuberspray
 resource "local_file" "inventory-kubespray" {
   content = <<EOF2
 all:
@@ -706,7 +705,6 @@ internal-ip-address-vm-master = "192.168.10.6"
 
 * Inventory-файлы были сформированы корректно. Переходим к развертыванию ресурсов с помощью ansible.
 
-<a id="2-3"></a>
 ### Развертывание Kubernetes кластера с помощью Kubespray
 1. Запустим вышеописанный ansible-playbook, выполняющий подготовку узлов для установки Kubernetes методом Kubespray:
 ```
@@ -783,7 +781,7 @@ kubernetes/node : Pre-upgrade | check if kubelet container exists --------------
 container-engine/crictl : Extract_file | Unpacking archive -------------------------------------------------------------------------------------------- 8.90s
 kubernetes/kubeadm : Update server field in kubelet kubeconfig ---------------------------------------------------------------------------------------- 8.57s
 
-```
+
 4. Выполним создание и настройку kubeconfig-файла для пользователя ubuntu:
 ```
 root@vm-master::~$ mkdir -p $HOME/.kube
@@ -828,18 +826,15 @@ kube-system   nodelocaldns-jvb9m                                       1/1     R
 
 ```
 3. Кластер Kubernetes работает корректно. Подтвердим результат развертывания скриншотами:
-```
 ![kuber running](img/11.jpg)
 ![kuber running](img/12.jpg)
 ![kuber running](img/13.jpg)
 
 
----
 
-<a id="3"></a>
+
 ## Создание тестового приложения
 
-<a id="3-1"></a>
 ### Подготовка инструментов для работы
 
 1. Выполним установку Docker на виртуальную машину
@@ -891,7 +886,6 @@ root@vm:~# docker --version
 Docker version 26.1.3, build b72abbb
 ```
 
-<a id="3-2"></a>
 ### Создание Docker-образа приложения
 1. Создадим директорию для приложения: 
 ```
