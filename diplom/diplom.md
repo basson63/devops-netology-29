@@ -186,18 +186,16 @@ provider_installation {
 Результат выполнения команды terraform init:
 ![init](img/1.jpg)
 
- Проверим синтаксис этого файла и составим план его применения:
-
 Результат выполнения команды terraform validate:
 ![init](img/2.jpg)
 
 Результат выполнения команды terraform plan:
-Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
++ Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
   + create
 
 Terraform will perform the following actions:
 
-  # local_file.backend will be created
+ + # local_file.backend will be created
   + resource "local_file" "backend" {
       + content              = (sensitive value)
       + content_base64sha256 = (known after apply)
