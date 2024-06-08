@@ -998,10 +998,238 @@ v1: digest: sha256:ce9fb633a0929dbc3032878c9afe3f853c8380140e6020cb19ff0ae472673
 
 ```
 3. Проверим успешность загрузки образа на YC Container Registry:
+```
+
 ![init](img/10.jpg)
 * Образ успешно загружен.
 [YC Container Registry](https://console.yandex.cloud/folders/b1gm549jb8foho4i61nr/container-registry/registries/crpmh7guhbh8fj5qs00k/overview/komlev_webapp/image)
 Отдельный git репозиторий с простым nginx конфигом:
 [app](https://github.com/basson63/app/tree/main)
 ```
+
+
+## 4 этап выполнения
+
+### Подготовка cистемы мониторинга и деплой приложения
+
+1. Скачаем репозиторий `kube-prometeus release-0.13`:
+
+Так как нам необходимо организовать HTTP-доступ к web интерфейсу `Grafana`, перед установкой `kube-prometeus` изменим настройки сервиса `Grafana` и настройки сети `Grafana`:
+
+Изменим в `grafana-service.yaml` тип сетевого сервиса с `ClusterIP` на `NodePort` и укажем конкретный порт из диапазона 30000-32767
+
+```
+## grafana-service.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: grafana
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 9.3.2
+  name: grafana
+  namespace: monitoring
+spec:
+  ports:
+  - name: http
+    port: 3000
+    targetPort: http
+    nodePort: 30003
+  type: NodePort
+  selector:
+    app.kubernetes.io/component: grafana
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/part-of: kube-prometheus
+```
+```
+![init](img/22.jpg)
+
+
+Отключим в `grafana-networkPolicy.yaml` настройки ingress:
+
+```
+## grafana-networkPolicy.yaml
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  labels:
+    app.kubernetes.io/component: grafana
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 9.3.2
+  name: grafana
+  namespace: monitoring
+spec:
+  egress:
+  - {}
+  ingress:
+  - {}
+#  - from:
+#    - podSelector:
+#        matchLabels:
+#          app.kubernetes.io/name: prometheus
+#    ports:
+#    - port: 3000
+#      protocol: TCP
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+  policyTypes:
+  - Egress
+  - Ingress
+```
+![init](img/23.jpg)
+
+
+
+2. Создадим пространство имен и `CRD`:
+
+---
+![init](img/14.jpg)
+---
+![init](img/15.jpg)
+---
+
+3. Проверяем созданные ресурсы:
+
+![init](img/16.jpg)
+
+4. Проверяем работу сервса `Grafana`:
+
+![init](img/17.jpg)
+
+5. Для деплоя тестового приложения, созданного на 3-м этапе используем `Qbec`
+
+Добавим в первоначальный манифест `Ansible`, который использовали для предварительной настройки ВМ кластера установку Qbec.
+
+```
+  - name: Install Qbec
+    hosts: master
+    become: yes
+    tasks:
+
+      - name: Create a directory golang
+        become_user: root
+        ansible.builtin.file:
+          path: ~/golang
+          state: directory
+          mode: '0755'
+
+      - name: Create a directory qbec
+        become_user: root
+        ansible.builtin.file:
+          path: ~/qbec
+          state: directory
+          mode: '0755'
+
+      - name: Download Golang
+        ansible.builtin.get_url:
+          url: https://go.dev/dl/go1.19.7.linux-amd64.tar.gz
+          dest: /root/golang/go1.19.7.linux-amd64.tar.gz
+
+      - name: Download Qbec
+        ansible.builtin.get_url:
+          url: https://github.com/splunk/qbec/releases/download/v0.15.2/qbec-linux-amd64.tar.gz
+          dest: /root/qbec/qbec-linux-amd64.tar.gz
+
+      - name: Extract Golang
+        ansible.builtin.unarchive:
+          src: /root/golang/go1.19.7.linux-amd64.tar.gz
+          dest: /usr/local
+          remote_src: yes
+
+      - name: Extract Qbec
+        ansible.builtin.unarchive:
+          src: /root/qbec/qbec-linux-amd64.tar.gz
+          dest: /usr/local/bin
+          remote_src: yes
+
+      - name: Add usr/local/go/bin in $PATH
+        become_user: root
+        lineinfile:
+          path: "~/.bashrc"
+          line: "export PATH=$PATH:/usr/local/go/bin"
+```
+
+Применяем измененный манифест и проверяем установку необходимого ПО:
+
+![init](img/18.jpg)
+
+6. Создадим конфигурацию `qbec-stage`:
+
+![init](img/19.jpg)
+
+7. Cоздадим окружение: `stage` с явным указанием параметров в файле:
+
+```
+## stage.jsonnet
+
+[
+  {
+    apiVersion: 'apps/v1',
+    kind: 'Deployment',
+    metadata: {
+      name: 'webapp-diplom',
+    },
+    spec: {
+      replicas: 1,
+      selector: {
+        matchLabels: {
+          app: 'webapp'
+        },
+      },
+      template: {
+        metadata: {
+          labels: {
+            app: 'webapp'
+          },
+        },
+        spec: {
+          containers: [
+            {
+              name: 'my-first-registry',
+              image: 'cr.yandex/crpmh7guhbh8fj5qs00k/komlev_webapp',
+              imagePullPolicy: 'Always'
+            },
+          ],
+        },
+      },
+    },
+  },
+]
+
+```
+
+Создадим  `namespace` qbec в кластере `Kubernetes`:
+
+![init](img/20.jpg)
+
+Изменим файл `qbec.yaml` добавим созданные ранее `namespace`:
+
+```
+## qbec.yaml
+
+apiVersion: qbec.io/v1alpha1
+kind: App
+metadata:
+  name: qbec-stage
+spec:
+  environments:
+    stage:
+      defaultNamespace: qbec
+      server: https://127.0.0.1:6443
+  vars: {}
+```
+
+
+8. Проверим созданные файлы на валидацию и развернем окружение:
+
+![init](img/21.jpg)
+
+Результат выполнения:
 
