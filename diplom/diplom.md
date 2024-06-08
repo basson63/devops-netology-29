@@ -373,7 +373,7 @@ Plan: 13 to add, 0 to change, 0 to destroy.
 * Применим конфигурацию, описанную в `main.tf`:
 
 ![init](img/3.jpg)
-```
+
 
 
 ## Подтвердим успешность создания ресурсов и задействования S3-bucket'а скриншотами:
@@ -382,13 +382,11 @@ Plan: 13 to add, 0 to change, 0 to destroy.
 ![init](img/5.jpg)
 ![init](img/6.jpg)
 
-```
 
 ## Создание Kubernetes кластера
 
 ### Подготовка виртуальных машин Compute Cloud для создания Kubernetes-кластера
 1. Создадим файл `vm.tf` в котором будет описано три виртуальные машины, одна master и две worker в разных зонах доступности:
-```
 ```
 Virtual machines
 Kubernetes master
