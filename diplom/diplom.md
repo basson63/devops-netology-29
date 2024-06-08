@@ -737,6 +737,7 @@ PLAY RECAP *********************************************************************
 158.160.125.138            : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 158.160.90.20              : ok=5    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 51.250.11.200              : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
 
 2. Ansible-playbook отработал корректно. Далее скопируем закрытый ключ и сформированный inventory-kubespray с локальной машины на мастер-ноду
 ```
@@ -759,7 +760,6 @@ vm-worker-1.ru-central1.internal : ok=409  changed=51   unreachable=0    failed=
 vm-worker-2.ru-central1.internal : ok=409  changed=51   unreachable=0    failed=0    skipped=659  rescued=0    ignored=1
 
 Monday 03 June 2024  08:04:06 +0000 (0:00:00.203)       0:16:22.908 ***********
-===============================================================================
 network_plugin/calico : Wait for calico kubeconfig to be created ------------------------------------------------------------------------------------- 68.37s
 kubernetes/control-plane : Kubeadm | Initialize first master ----------------------------------------------------------------------------------------- 57.32s
 network_plugin/calico : Calico | Copy calicoctl binary from download dir ----------------------------------------------------------------------------- 31.73s
