@@ -378,6 +378,7 @@ Plan: 13 to add, 0 to change, 0 to destroy.
 
 ## Подтвердим успешность создания ресурсов и задействования S3-bucket'а скриншотами:
 ```
+```
 ![init](img/4.jpg) 
 ![init](img/5.jpg)
 ![init](img/6.jpg)
