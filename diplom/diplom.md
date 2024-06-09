@@ -1211,7 +1211,6 @@ servicemonitor.monitoring.coreos.com/prometheus-operator created
 
 [http://51.250.11.78:30003/](http://51.250.11.78:30003/)
 admin /netology1
-```
 
 5. Для деплоя тестового приложения, созданного на 3-м этапе используем `Qbec`
 
@@ -1264,7 +1263,7 @@ admin /netology1
         become_user: root
         lineinfile:
           path: "~/.bashrc"
-          line: "export PATH=$PATH:/usr/local/go/bin"
+         line: "export PATH=$PATH:/usr/local/go/bin"
 ```
 
 Применяем измененный манифест и проверяем установку необходимого ПО:
@@ -1278,7 +1277,7 @@ admin /netology1
 7. Cоздадим окружение: `stage` с явным указанием параметров в файле:
 
 ```
-## stage.jsonnet
+stage.jsonnet
 
 [
   {
@@ -1323,7 +1322,7 @@ admin /netology1
 Изменим файл `qbec.yaml` добавим созданные ранее `namespace`:
 
 ```
-## qbec.yaml
+qbec.yaml
 
 apiVersion: qbec.io/v1alpha1
 kind: App
