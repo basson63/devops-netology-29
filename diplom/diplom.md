@@ -1208,7 +1208,6 @@ servicemonitor.monitoring.coreos.com/prometheus-operator created
 ![init](img/17.jpg)
 
 ссылка на grafana:
-```
 
 [http://51.250.11.78:30003/](http://51.250.11.78:30003/)
 admin /netology1
