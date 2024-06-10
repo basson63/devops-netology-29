@@ -1209,7 +1209,7 @@ servicemonitor.monitoring.coreos.com/prometheus-operator created
 
 ссылка на grafana:
 
-[http://51.250.11.78:30003/](http://51.250.11.78:30003/)
+[http://158.160.110.188:30003/](http://158.160.110.188:30003/)
 admin /netology1
 
 5. Для деплоя тестового приложения, созданного на 3-м этапе используем `Qbec`
