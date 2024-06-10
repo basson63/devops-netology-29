@@ -1343,3 +1343,26 @@ spec:
 
 Результат выполнения:
 
+![init](img/24.jpg)
+
+9. Пробросим через `NodePort` развернутое приложение:
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-service
+spec:
+  type: NodePort
+  selector:
+    app: webapp
+  ports:
+  - protocol: TCP
+    port: 80
+    nodePort: 30080
+```
+10. Проверяем доступность статического сайта:
+
+![init](img/27.jpg)
+
+
+![init](img/26.jpg)
