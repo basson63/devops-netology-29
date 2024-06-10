@@ -1368,3 +1368,153 @@ spec:
 ![init](img/26.jpg)
 
 [Сыылка на веб-сайт](http://158.160.110.188:30080/)
+
+<a id="5"></a>
+## Установка и настройка CI/CD
+
+1. Создадим новый репозиторий для дипломного проекта:
+```
+https://github.com/basson63/app
+
+```
+2. Добавим в репозиторий атрибуты доступа в Yandex Container Registry
+
+```
+Settings / Secrets and variables / Actions / Secrets / New repository secret
+```
+![init](img/29.jpg)
+
+
+3. Создадим файл для описания процесса развёртывания в GitHub Actions:
+
+app/.github/workflows/dockerimage.yml
+```
+
+name: Docker Image CI
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Yandex Cloud CR "Login" Action for GitHub Actions
+      uses: yc-actions/yc-cr-login@v0.1-alpha
+      with:
+        yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
+
+    - name: Build, tag, and push image to Yandex Cloud Container Registr
+      env:
+          CR_REGISTRY: crpmh7guhbh8fj5qs00k
+          CR_REPO: komlev_webapp
+          IMAGE_TAG: latest
+      run: |
+        docker build -t cr.yandex/$CR_REGISTRY/$CR_REPO:$IMAGE_TAG .
+        docker push cr.yandex/$CR_REGISTRY/$CR_REPO:$IMAGE_TAG
+```
+
+4. Подключим созданный GitHub-репозиторий:
+```
+$ git pull https://github.com/basson63/app.git
+remote: Enumerating objects: 44, done.
+remote: Counting objects: 100% (44/44), done.
+remote: Compressing objects: 100% (30/30), done.
+remote: Total 44 (delta 12), reused 12 (delta 0), pack-reused 0
+Unpacking objects: 100% (44/44), 141.23 KiB | 712.00 KiB/s, done.
+From https://github.com/basson63/app
+ * branch            HEAD       -> FETCH_HEAD
+
+```
+5. Выполним загрузку файлов в GitHub-репозиторий:
+```
+$ git push -u origin main
+Enumerating objects: 7, done.
+Counting objects: 100% (7/7), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 452 bytes | 452.00 KiB/s, done.
+Total 4 (delta 1), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To https://github.com/basson63/app.git
+   17f7bb4..cac58f2  main -> main
+branch 'main' set up to track 'origin/main'.
+
+```
+6. Изменим файл веб-приложения index.html в репозитории и отправим изменения в GitHub:
+
+```
+$ git add .
+
+$ git commit -m "changed index.html v0.2"
+[main cb3f9c3] changed index.html v0.2
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+$ git push -u origin main
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 305 bytes | 305.00 KiB/s, done.
+Total 3 (delta 2), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/basson63/app.git
+   6ab00ac..cb3f9c3  main -> main
+branch 'main' set up to track 'origin/main'.
+```
+7. Зайдем в GitHub Actions и убедимся в корректной отработке двух коммитов:
+![init](img/30.jpg)
+
+* Видим, что коммиты на GitHub Actions отработали корректно
+
+8. Зайдем в Yandex Container Registry и убедимся, что в репозитории загружен образ с тегом `latest`:
+![init](img/31.jpg)
+
+* Видим, что GitHub Actions корректно создает и загружает образ пользовательского web-приложения в Yandex Container Registry при выполнении коммита.
+
+9. Загрузка в GitHub Actions при добавлении тега:
+* Cоздадим файл для описания процесса развёртывания в GitHub Actions
+
+app/.github/workflows/imagetag.yml
+```
+
+name: Docker Image Tag
+on:
+  push:
+    tags:
+    - "v*"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Yandex Cloud CR "Login" Action for GitHub Actions
+      uses: yc-actions/yc-cr-login@v0.1-alpha
+      with:
+        yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
+
+    - name: Build and push Docker image to Yandex Cloud Container Registr
+      env:
+          CR_REGISTRY: crpmh7guhbh8fj5qs00k
+          CR_REPO: komlev_webapp
+          IMAGE_TAG: ${{ github.ref_name }}
+      run: |
+        docker build -t cr.yandex/$CR_REGISTRY/$CR_REPO:$IMAGE_TAG .
+        docker push cr.yandex/$CR_REGISTRY/$CR_REPO:$IMAGE_TAG
+       
+
+```
+
+* Создали тег v.0.0.4
+```
+
+$ git push origin v0.0.4
+Total 0 (delta 0), reused 0 (delta 0), pack-reused 0
+To https://github.com/basson63/app.git
+ * [new tag]         v0.0.4 -> v0.0.4
+```
+* Видим, что тег на GitHub Actions отработал корректно
+
+
+![init](img/32.jpg)
+
