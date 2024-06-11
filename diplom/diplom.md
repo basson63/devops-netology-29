@@ -991,7 +991,7 @@ v1: digest: sha256:ce9fb633a0929dbc3032878c9afe3f853c8380140e6020cb19ff0ae472673
 [YC Container Registry](https://console.yandex.cloud/folders/b1gm549jb8foho4i61nr/container-registry/registries/crpmh7guhbh8fj5qs00k/overview/komlev_webapp/image)
 Отдельный git репозиторий с простым nginx конфигом:
 [app](https://github.com/basson63/app/tree/main)
-```
+
 
 
 ## 4 этап выполнения
@@ -1005,7 +1005,7 @@ v1: digest: sha256:ce9fb633a0929dbc3032878c9afe3f853c8380140e6020cb19ff0ae472673
 Изменим в `grafana-service.yaml` тип сетевого сервиса с `ClusterIP` на `NodePort` и укажем конкретный порт из диапазона 30000-32767
 
 ```
-## grafana-service.yaml
+ grafana-service.yaml
 
 apiVersion: v1
 kind: Service
@@ -1029,14 +1029,13 @@ spec:
     app.kubernetes.io/name: grafana
     app.kubernetes.io/part-of: kube-prometheus
 ```
-```
 ![init](img/22.jpg)
 
 
 Отключим в `grafana-networkPolicy.yaml` настройки ingress:
 
 ```
-## grafana-networkPolicy.yaml
+ grafana-networkPolicy.yaml
 
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -1053,13 +1052,13 @@ spec:
   - {}
   ingress:
   - {}
-#  - from:
-#    - podSelector:
-#        matchLabels:
-#          app.kubernetes.io/name: prometheus
-#    ports:
-#    - port: 3000
-#      protocol: TCP
+  - from:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: prometheus
+    ports:
+    - port: 3000
+      protocol: TCP
   podSelector:
     matchLabels:
       app.kubernetes.io/component: grafana
