@@ -1472,13 +1472,24 @@ branch 'main' set up to track 'origin/main'.
 
 * Видим, что GitHub Actions корректно создает и загружает образ пользовательского web-приложения в Yandex Container Registry при выполнении коммита.
 
-9. Загрузка в GitHub Actions при добавлении тега:
+<a id="5-3"></a>
+### Подготовка GitHub для развертывания приложения в Kubernetes кластере
+1. 1. Добавим в репозиторий атрибут доступа к Kubernetes-кластеру
+* В свойствах репозитория Github добавим секрет для Kubernetes и укажем содержание kubeconfig-файла для подключения к Kubernetes кластеру. Имя: KUBECONFIG_FILE, содержание: из файла `~/.kube/config`.
+
+2. Подтвердим добавление секрета скриншотом:
+
+![init](img/33.jpg)
+
+<a id="5-4"></a>
+### Отработка развертывания приложения в Kubernetes кластере при коммите с тегом
+
 * Cоздадим файл для описания процесса развёртывания в GitHub Actions
 
 app/.github/workflows/imagetag.yml
 ```
 
-name: Docker Image Tag
+name: Deploy
 on:
   push:
     tags:
@@ -1501,11 +1512,30 @@ jobs:
       run: |
         docker build -t cr.yandex/$CR_REGISTRY/$CR_REPO:$IMAGE_TAG .
         docker push cr.yandex/$CR_REGISTRY/$CR_REPO:$IMAGE_TAG
-       
+
+    - name: Setup kubeconfig
+      run: echo '${{ secrets.KUBECONFIG_FILE }}' > kubeconfig
+
+    - name: Install Kubernetes CLI
+      run: |
+        curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+        chmod +x kubectl
+        sudo mv kubectl /usr/local/bin/
+
+    - name: Delete old deployment
+      run: |
+        export KUBECONFIG=kubeconfig
+        kubectl delete deploy webapp-diploma || true
+
+    - name: Deploy to Kubernetes
+      run: |
+        export KUBECONFIG=kubeconfig
+        kubectl apply -f deployment.yaml && kubectl apply -f service.yaml && kubectl set image deployment/webapp-diplom webapp-diplom=cr.yandex/$CR_REGISTRY/$CR_REPO:$IMAGE_TAG       
 
 ```
 
 * Создали тег v.0.0.4
+
 ```
 
 $ git push origin v0.0.4
@@ -1513,8 +1543,26 @@ Total 0 (delta 0), reused 0 (delta 0), pack-reused 0
 To https://github.com/basson63/app.git
  * [new tag]         v0.0.4 -> v0.0.4
 ```
-* Видим, что тег на GitHub Actions отработал корректно
+* Проверим результат отработки GitHub Actions
 
 
 ![init](img/32.jpg)
 
+![init](img/36.jpg)
+
+## Что необходимо для сдачи задания?
+
+1. Репозиторий с конфигурационными файлами Terraform и готовность продемонстрировать создание всех ресурсов с нуля. 
+[terraform](https://github.com/basson63/devops-netology-29/tree/main/diplom/terraform) 
+2. Пример pull request с комментариями созданными atlantis'ом или снимки экрана из Terraform Cloud или вашего CI-CD-terraform pipeline. 
+[pull request](https://github.com/basson63/app/blob/main/.github/workflows/imagetag.yml)
+3. Репозиторий с конфигурацией ansible, если был выбран способ создания Kubernetes кластера при помощи ansible. 
+4. Репозиторий с Dockerfile тестового приложения и ссылка на собранный docker image. 
+[docker](https://github.com/basson63/app)
+Docker image находится на Yandex Rigestry
+5. Репозиторий с конфигурацией Kubernetes кластера.
+[terraform](https://github.com/basson63/devops-netology-29/tree/main/diplom/terraform)
+6. Ссылка на тестовое приложение и веб интерфейс Grafana с данными доступа.
+[grafana](http://158.160.126.141:30003/login) admin netology1
+[app_repo](https://github.com/basson63/app)
+7. Все репозитории рекомендуется хранить на одном ресурсе (github, gitlab
